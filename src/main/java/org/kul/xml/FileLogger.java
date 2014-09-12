@@ -19,20 +19,31 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.xml; 
+
+import org.kul.xml.err.DocumentException;
+
 
 public class FileLogger{
 
-	private String file;
-
-	public FileLogger(final String file){
-		this.file = file;
+	private final ADocument doc;
+	
+	public FileLogger(final ADocument doc) {
+		this.doc = doc;
 	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
+	
+	public void writeXPathNode(final String query, final String node) throws DocumentException{
+		doc.writeXPathNode(query, node);
 	}
-
+	
+	public void writeXPathNodeText(final String query, final String text) throws DocumentException{
+		doc.writeXPathNodeText(query,  text);
+	}
+	public void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException{
+		doc.writeXPathNodeAttribute(query, key, value);
+	}
+	
+	public void save() throws DocumentException{
+		doc.save();
+	}
 }

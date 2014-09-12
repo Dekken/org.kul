@@ -1,4 +1,25 @@
-package org.kul.xml.service;
+/**
+
+Created on: 12 Sept 2014
+
+Copyright (c) 2013, Philip Deegan
+
+This file is part of org.kul.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+package org.kul.xml;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,57 +27,52 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.kul.xml.KulXMLException;
-import org.kul.xml.doc.AKulXMLDocument;
-import org.kul.xml.doc.node.AKulXMLNode;
-import org.kul.xml.doc.node.KulXMLNodeAttributeValidator;
-import org.kul.xml.doc.node.KulXMLNodeValidator;
-import org.kul.xml.err.KulXMLDocumentException;
-import org.kul.xml.err.KulXMLNoSuchAttributeException;
-import org.kul.xml.err.KulXMLNodeAttributeValidationException;
-import org.kul.xml.err.KulXMLNodeValidationException;
+import org.kul.xml.err.DocumentException;
+import org.kul.xml.err.NoSuchAttributeException;
+import org.kul.xml.err.NodeAttributeValidationException;
+import org.kul.xml.err.NodeValidationException;
 
-public class KulXMLValidationService{
+public class ValidationService{
 
 	//private static final Logger LOGGER =  Logger.getLogger(KulXMLValidationService.class);
 
 	public static class INSTANCE{
-		private static  KulXMLValidationService instance;
-		public static KulXMLValidationService GET() { if(instance == null) instance = new KulXMLValidationService(); return instance;}
+		private static  ValidationService instance;
+		public static ValidationService GET() { if(instance == null) instance = new ValidationService(); return instance;}
 	}
 
-	public final AKulXMLDocument create(final File f,  final Pair<String, KulXMLNodeValidator> nv, final Class<? extends AKulXMLDocument> docType) throws KulXMLDocumentException, KulXMLException{
-		AKulXMLDocument doc = AKulXMLDocument.create(f, docType);
-		AKulXMLNode docRoot = doc.root();
+	public final ADocument create(final File f,  final Pair<String, NodeValidator> nv, final Class<? extends ADocument> docType) throws DocumentException, org.kul.Exception{
+		ADocument doc = ADocument.create(f, docType);
+		ANode docRoot = doc.root();
 		if(!nv.getLeft().equals(docRoot.name()))
-			throw new KulXMLNodeValidationException("XML Exception: Element " + docRoot.name() + " is unknown");
+			throw new NodeValidationException("XML Exception: Element " + docRoot.name() + " is unknown");
 		this.validate(docRoot,  nv.getRight());
-		ArrayList<AKulXMLNode> rList = new ArrayList<AKulXMLNode>();
+		ArrayList<ANode> rList = new ArrayList<ANode>();
 		rList.add(docRoot);
-		for(final KulXMLNodeAttributeValidator nav : nv.getRight().getAtVals())
+		for(final NodeAttributeValidator nav : nv.getRight().getAtVals())
 			validateAttributes(rList, nav);
 		return doc;
 	}
 
-	private final void validate(AKulXMLNode node, final KulXMLNodeValidator nv) throws KulXMLException{
+	private final void validate(ANode node, final NodeValidator nv) throws org.kul.Exception{
 
 		Map<String, Integer> occurences = new HashMap<String, Integer>();
-		for(final AKulXMLNode n : node.children()){
+		for(final ANode n : node.children()){
 			if(occurences.keySet().contains(n.name())) occurences.put(n.name(), occurences.get(n.name()) + 1); 
 			else occurences.put(n.name(), 1);
 
 			boolean found = false;
-			for(final Map.Entry<String, KulXMLNodeValidator> nvE : nv.getChildren().entrySet()){
+			for(final Map.Entry<String, NodeValidator> nvE : nv.getChildren().entrySet()){
 
 				if(n.name().equals(nvE.getKey())){
 					if(n.attributes().size() > 0){
 						for(Map.Entry<String, String> atts : n.attributes().entrySet()){						
 							boolean attFound = false;
-							for(final KulXMLNodeAttributeValidator nav : nvE.getValue().getAtVals()){
+							for(final NodeAttributeValidator nav : nvE.getValue().getAtVals()){
 								if(nav.allowedValues().keySet().contains(atts.getKey())) { attFound = true; break;}								
 							}	
 							if(!attFound) {
-								throw new KulXMLNodeValidationException("XML Exception: Attribute: \"" + atts.getKey() + "\" for Element : \"" + n.name() + "\" is unknown");
+								throw new NodeValidationException("XML Exception: Attribute: \"" + atts.getKey() + "\" for Element : \"" + n.name() + "\" is unknown");
 							}
 						}
 					}
@@ -65,21 +81,21 @@ public class KulXMLValidationService{
 				}
 			}
 			if(!found){
-				throw new KulXMLNodeValidationException("XML Exception: Element " +n.name() + " is unknown");
+				throw new NodeValidationException("XML Exception: Element " +n.name() + " is unknown");
 			}
 		}
 
-		for(final AKulXMLNode n : node.children()){
+		for(final ANode n : node.children()){
 			final int i = occurences.get(n.name());
-			final KulXMLNodeValidator nvK = nv.getChildren().get(n.name());
+			final NodeValidator nvK = nv.getChildren().get(n.name());
 			if(nvK.minimum() != 0 && i < nvK.minimum()){
-				throw new KulXMLNodeValidationException("XML Exception: Invalid minimum number of Element: " + n.name());
+				throw new NodeValidationException("XML Exception: Invalid minimum number of Element: " + n.name());
 			}
 			if(nvK.maximum() != 0 && i > nvK.maximum()){
-				throw new KulXMLNodeValidationException("XML Exception: Invalid maximum number of Element: " + n.name());
+				throw new NodeValidationException("XML Exception: Invalid maximum number of Element: " + n.name());
 			}			
 		}
-		for(final AKulXMLNode n : node.children()){
+		for(final ANode n : node.children()){
 			if(nv.getChildren().get(n.name()).isText()){
 				n.text();
 			}
@@ -87,12 +103,12 @@ public class KulXMLValidationService{
 		}
 	}
 
-	private void validateAttributes(final ArrayList<AKulXMLNode> nodes, final KulXMLNodeAttributeValidator nv) throws KulXMLException{
+	private void validateAttributes(final ArrayList<ANode> nodes, final NodeAttributeValidator nv) throws org.kul.Exception{
 		for(final String allValKey : nv.allowedValues().keySet()){
 
 			ArrayList<String> allValList = nv.allowedValues().get(allValKey);
 
-			for(final AKulXMLNode n : nodes){
+			for(final ANode n : nodes){
 				boolean f = true;
 				for(final String attKey  : n.attributes().keySet()){
 					String atVal = n.attributes().get(attKey);
@@ -103,21 +119,21 @@ public class KulXMLValidationService{
 						if(f) break;
 					}
 				}
-				if(!f && nv.isChecked()) throw new KulXMLNodeAttributeValidationException("Attribute \"" + allValKey + "\" on node \"" + n.name() + "\" is not one of the expected values!");
+				if(!f && nv.isChecked()) throw new NodeAttributeValidationException("Attribute \"" + allValKey + "\" on node \"" + n.name() + "\" is not one of the expected values!");
 			}
 
-			for(final AKulXMLNode n : nodes){
+			for(final ANode n : nodes){
 				if(nv.isMandatory()){
 					try{
 						n.attribute(allValKey);
-					}catch(KulXMLNoSuchAttributeException e){ throw new KulXMLNodeAttributeValidationException("Attribute \"" + allValKey + "\" on node \"" + n.name() + "\" is MANDATORY!");}
+					}catch(NoSuchAttributeException e){ throw new NodeAttributeValidationException("Attribute \"" + allValKey + "\" on node \"" + n.name() + "\" is MANDATORY!");}
 				}
 			}
 
 			if(nv.isUnique()){
 				String name = "";
 				ArrayList<String> atts = new ArrayList<String>();
-				for(final AKulXMLNode n : nodes){
+				for(final ANode n : nodes){
 					name = n.name();
 					for(final String attKey  : n.attributes().keySet()){
 						if(allValKey.equals(attKey))
@@ -127,21 +143,21 @@ public class KulXMLValidationService{
 						int i = 0;
 						for(final String s2 : atts)
 							if(s1.equals(s2)) i++;
-						if(i > 1) throw new KulXMLNodeAttributeValidationException("Attribute " + allValKey + " on node " + name + " must be unique!");
+						if(i > 1) throw new NodeAttributeValidationException("Attribute " + allValKey + " on node " + name + " must be unique!");
 					}				
 				}
 			}
 		}
 	}
 	/*
-	private void validateAttributes(final AKulXMLNode node, final KulXMLNodeValidator nodeV) throws KulXMLException{
-		for(final AKulXMLNode n : node.children()){
+	private void validateAttributes(final ANode node, final KulXMLNodeValidator nodeV) throws KulXMLException{
+		for(final ANode n : node.children()){
 			for(final String nvKey : nodeV.getChildren().keySet()){
 				if(nvKey.equals(n.name())){
 					final KulXMLNodeValidator nv = nodeV.getChildren().get(nvKey);
-					for(final KulXMLNodeAttributeValidator nav : nv.getAtVals()){
-						ArrayList<AKulXMLNode> ns = new ArrayList<AKulXMLNode>();
-						for(final AKulXMLNode in : node.children())
+					for(final NodeAttributeValidator nav : nv.getAtVals()){
+						ArrayList<ANode> ns = new ArrayList<ANode>();
+						for(final ANode in : node.children())
 							if(n.name().equals(in.name()))
 								ns.add(in);
 						validateAttributes(ns, nav);

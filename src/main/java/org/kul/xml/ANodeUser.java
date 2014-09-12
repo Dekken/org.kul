@@ -19,20 +19,21 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.xml;
 
-public class FileLogger{
+import java.io.File;
 
-	private String file;
+import org.apache.commons.lang3.tuple.Pair;
 
-	public FileLogger(final String file){
-		this.file = file;
-	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
-	}
-
+public abstract class ANodeUser{
+	
+	private final ADocument doc;	
+	
+	protected ANodeUser(final File f, Class<? extends ADocument> docType) throws org.kul.Exception{
+		this.doc = ValidationService.INSTANCE.GET().create(f, validator(), docType);	
+	}	
+	
+	public final ADocument doc(){ return doc;}	
+	
+	protected abstract Pair<String, NodeValidator> validator();
 }

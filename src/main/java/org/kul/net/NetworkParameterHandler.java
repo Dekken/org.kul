@@ -19,20 +19,30 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.net;
 
-public class FileLogger{
+import java.util.HashMap;
 
-	private String file;
+import org.kul.StringArgsParsingService;
 
-	public FileLogger(final String file){
-		this.file = file;
-	}
 
-	public String getFile(){ return file; }
+public class NetworkParameterHandler {
 
-	public void write(String s){
+	private static NetworkParameterHandler instance;
+	
+	public static NetworkParameterHandler INSTANCE(){
+		return instance == null ? (instance = new NetworkParameterHandler()) : instance;
+	} 
 		
+	public NetworkParameters handle(final String args[]){
+		return new NetworkParameters(){{
+			HashMap<String, String> argMap = StringArgsParsingService.INSTANCE().returnParsedArguments(args);
+			for(String s : argMap.keySet()){
+				if(s.equals("host"))	{ setHost(argMap.get(s));}
+				if(s.equals("port"))	{ setPort(argMap.get(s));}
+			}			
+		}};		
 	}
+	
 
 }

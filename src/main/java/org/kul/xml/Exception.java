@@ -19,20 +19,12 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.xml;
 
-public class FileLogger{
+@SuppressWarnings("serial")
+public class Exception extends org.kul.Exception{
 
-	private String file;
-
-	public FileLogger(final String file){
-		this.file = file;
+	public Exception(String msg) {
+		super(msg);
 	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
-	}
-
 }

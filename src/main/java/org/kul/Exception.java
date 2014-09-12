@@ -21,18 +21,10 @@ along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.kul;
 
-public class FileLogger{
-
-	private String file;
-
-	public FileLogger(final String file){
-		this.file = file;
+@SuppressWarnings("serial")
+public class Exception extends java.lang.Exception{	
+	
+	public Exception(final String msg){
+		super(msg);
 	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
-	}
-
 }

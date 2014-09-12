@@ -19,20 +19,19 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.net;
 
-public class FileLogger{
+public class NetworkParameters {
 
-	private String file;
-
-	public FileLogger(final String file){
-		this.file = file;
-	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
-	}
-
+	private String host = "localhost";
+	private String port = "8080";
+	
+	public NetworkParameters(){}	
+	
+	//Getters/Setters	
+	public String getHost() 			{ return host;}
+	public void setHost(String host) 	{ this.host = host;	}
+	
+	public String getPort() 			{ return port; }
+	public void setPort(String port) 	{ this.port = port; }		
 }

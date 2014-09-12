@@ -19,20 +19,42 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.xml;
 
-public class FileLogger{
 
-	private String file;
+public abstract class ThreadedFileLogger extends FileLogger implements Runnable{
 
-	public FileLogger(final String file){
-		this.file = file;
+	private boolean lock = false;
+	private Thread thread;
+
+	public ThreadedFileLogger( final ADocument doc){
+		super(doc);
+		thread = new Thread(this);
+	}
+	
+	protected void start(){
+		thread.start();
 	}
 
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
+	public void lock(){
+		lock = true;
 	}
 
+	public void unLock(){
+		lock = false;
+	}
+
+	public boolean isLocked(){
+		return lock;
+	}
+	
+	public void interrupt(){
+		thread.interrupt();
+	}
+	
+	public boolean isRunning(){
+		return thread.isAlive();
+	}
+	
+	public abstract void run();
 }

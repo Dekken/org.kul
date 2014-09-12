@@ -19,20 +19,31 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.net;
 
-public class FileLogger{
+import java.io.IOException;
+import java.util.ArrayList;
 
-	private String file;
 
-	public FileLogger(final String file){
-		this.file = file;
+public abstract class AListenerQueueHandler implements Runnable{
+
+	protected Thread queueHandler = new Thread(this);
+
+	protected Listener listener;
+
+	public AListenerQueueHandler(){
+		this(new String[0]);
 	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
+	public AListenerQueueHandler(String[] args){		
+		try {
+			listener = new Listener(args);
+			queueHandler.start();
+		} 
+		catch (IOException e) { e.printStackTrace(); }
 	}
-
+	
+	public ArrayList<IExecutable> getExecutables() { return listener.getExecutables(); }
+	
+	@Override
+	public abstract void run();
 }

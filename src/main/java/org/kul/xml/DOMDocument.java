@@ -1,4 +1,25 @@
-package org.kul.xml.doc;
+/**
+
+Created on: 12 Sept 2014
+
+Copyright (c) 2013, Philip Deegan
+
+This file is part of org.kul.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+package org.kul.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,47 +43,45 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.kul.xml.doc.node.AKulXMLNode;
-import org.kul.xml.doc.node.KulXMLDOMNode;
-import org.kul.xml.err.KulXMLDocumentException;
+import org.kul.xml.err.DocumentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-public class KulXMLDOMDocument extends AKulXMLDocument{
+public class DOMDocument extends ADocument{
 	
-	private static final Logger LOGGER = Logger.getLogger(KulXMLDOMDocument.class);
+	private static final Logger LOGGER = Logger.getLogger(DOMDocument.class);
 
-	private KulXMLDOMNode root;
+	private DOMNode root;
 	private Document domDoc;
 
-	public KulXMLDOMDocument(final File file)  throws KulXMLDocumentException{
+	public DOMDocument(final File file)  throws DocumentException{
 		super(file);
 		
 		if(!this.file().exists()){
-			throw new KulXMLDocumentException("File : " + file + " does not exist on the location machine");
+			throw new DocumentException("File : " + file + " does not exist on the location machine");
 		}
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder;
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();			
 			domDoc = dBuilder.parse(this.file());
-			root = new KulXMLDOMNode(domDoc.getDocumentElement());
+			root = new DOMNode(domDoc.getDocumentElement());
 		}catch (SAXException e) {
-			throw new KulXMLDocumentException(e.getMessage());
+			throw new DocumentException(e.getMessage());
 		} catch (IOException e) {
-			throw new KulXMLDocumentException(e.getMessage());
+			throw new DocumentException(e.getMessage());
 		}catch (ParserConfigurationException e) {
-			throw new KulXMLDocumentException(e.getMessage());
+			throw new DocumentException(e.getMessage());
 		}
 	}
 
-	public AKulXMLNode root(){
+	public ANode root(){
 		return root;
 	}
 	
-	public  void writeXPathNode(final String query, final String node) throws KulXMLDocumentException{
+	public  void writeXPathNode(final String query, final String node) throws DocumentException{
 		XPath xPath =  XPathFactory.newInstance().newXPath();				
 		Element element = domDoc.createElement(node);
 		
@@ -70,33 +89,33 @@ public class KulXMLDOMDocument extends AKulXMLDocument{
 			((Node) xPath.compile(query).evaluate(domDoc, XPathConstants.NODE)).appendChild(element);
 		} catch (XPathExpressionException e) {
 			LOGGER.error(e.getMessage());
-			throw new KulXMLDocumentException("Failed to write xpath node to file");
+			throw new DocumentException("Failed to write xpath node to file");
 		}		
 	}
 	
-	public  void writeXPathNodeText(final String query, final String value) throws KulXMLDocumentException{
+	public  void writeXPathNodeText(final String query, final String value) throws DocumentException{
 		XPath xPath =  XPathFactory.newInstance().newXPath();		
 		LOGGER.error("writeXPathNodeAttribute(" + query + ", " + value);
 		try {
 			((Node) xPath.compile(query).evaluate(domDoc, XPathConstants.NODE)).setTextContent(value);;			
 		} catch (XPathExpressionException e) {
 			LOGGER.error(e.getMessage());
-			throw new KulXMLDocumentException("Failed to write xpath text to file");
+			throw new DocumentException("Failed to write xpath text to file");
 		}		
 	}	
 	
-	public void writeXPathNodeAttribute(final String query, final String key, final String value) throws KulXMLDocumentException{
+	public void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException{
 		XPath xPath =  XPathFactory.newInstance().newXPath();				
 		LOGGER.error("writeXPathNodeAttribute(" + query + ", " + key + " , " + value);
 		try {
 			((Element) xPath.compile(query).evaluate(domDoc, XPathConstants.NODE)).setAttribute(key, value);			
 		} catch (XPathExpressionException e) {
 			LOGGER.error(e.getMessage());
-			throw new KulXMLDocumentException("Failed to write xpath attribute to file");
+			throw new DocumentException("Failed to write xpath attribute to file");
 		}		
 	}
 	
-	public void save() throws KulXMLDocumentException{
+	public void save() throws DocumentException{
 		Transformer transformer;
 		try {
 			transformer = TransformerFactory.newInstance().newTransformer();

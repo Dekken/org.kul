@@ -19,20 +19,11 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.kul;
+package org.kul.net;
 
-public class FileLogger{
+import java.io.Serializable;
 
-	private String file;
+public interface IExecutable extends Serializable{
 
-	public FileLogger(final String file){
-		this.file = file;
-	}
-
-	public String getFile(){ return file; }
-
-	public void write(String s){
-		
-	}
-
+	public void execute();
 }

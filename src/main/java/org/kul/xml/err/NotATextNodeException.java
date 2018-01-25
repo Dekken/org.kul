@@ -25,8 +25,8 @@ package org.kul.xml.err;
 @SuppressWarnings("serial")
 public class NotATextNodeException extends org.kul.Exception {
 
-	public NotATextNodeException(String msg) {
-		super(msg);
-	}
+  public NotATextNodeException(String msg) {
+    super(msg);
+  }
 
 }

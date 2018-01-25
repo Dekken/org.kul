@@ -30,41 +30,41 @@ import org.kul.xml.err.DocumentException;
 
 public abstract class ADocument{
 
-	private static final Logger LOGGER = Logger.getLogger(ADocument.class);
+  private static final Logger LOGGER = Logger.getLogger(ADocument.class);
 
-	protected File file;
+  protected File file;
 
-	public static ADocument create(final File file, final Class<? extends ADocument> docType) throws DocumentException{
-		Throwable ex = null;
-		try {
-			return docType.getDeclaredConstructor(File.class).newInstance(file);				
-		} 
-		catch (InstantiationException e) 			{  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
-		catch (IllegalAccessException e) 			{  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
-		catch (IllegalArgumentException e) 		{  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
-		catch (InvocationTargetException e) 		{  ex = e.getCause(); }
-		catch (NoSuchMethodException e) 		{  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
-		catch (SecurityException e) 					{  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
-		
-		if(ex != null){
-			if(DocumentException.class.isAssignableFrom(ex.getClass()))
-				throw (DocumentException) ex;		
-		}
+  public static ADocument create(final File file, final Class<? extends ADocument> docType) throws DocumentException{
+    Throwable ex = null;
+    try {
+      return docType.getDeclaredConstructor(File.class).newInstance(file);        
+    } 
+    catch (InstantiationException e)       {  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
+    catch (IllegalAccessException e)       {  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
+    catch (IllegalArgumentException e)     {  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
+    catch (InvocationTargetException e)     {  ex = e.getCause(); }
+    catch (NoSuchMethodException e)     {  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
+    catch (SecurityException e)           {  LOGGER.error(ExceptionUtils.getStackTrace(e)); }
+    
+    if(ex != null){
+      if(DocumentException.class.isAssignableFrom(ex.getClass()))
+        throw (DocumentException) ex;    
+    }
 
-		throw new DocumentException("XML Document creation failed, see stack trace");
-	}
+    throw new DocumentException("XML Document creation failed, see stack trace");
+  }
 
-	protected ADocument(final File file)  throws DocumentException{
-		this.file = file;
-	}
+  protected ADocument(final File file)  throws DocumentException{
+    this.file = file;
+  }
 
-	public final File file() { return this.file; }
+  public final File file() { return this.file; }
 
-	public abstract ANode root();
+  public abstract ANode root();
 
-	public abstract void writeXPathNode(final String query, final String node) throws DocumentException;
-	public abstract void writeXPathNodeText(final String query, final String text) throws DocumentException;
-	public abstract void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException;
+  public abstract void writeXPathNode(final String query, final String node) throws DocumentException;
+  public abstract void writeXPathNodeText(final String query, final String text) throws DocumentException;
+  public abstract void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException;
 
-	public abstract void save() throws DocumentException;
+  public abstract void save() throws DocumentException;
 }

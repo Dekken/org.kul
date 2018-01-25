@@ -24,7 +24,7 @@ package org.kul.xml;
 @SuppressWarnings("serial")
 public class Exception extends org.kul.Exception{
 
-	public Exception(String msg) {
-		super(msg);
-	}
+  public Exception(String msg) {
+    super(msg);
+  }
 }

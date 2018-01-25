@@ -27,23 +27,23 @@ import java.util.ArrayList;
 
 public abstract class AListenerQueueHandler implements Runnable{
 
-	protected Thread queueHandler = new Thread(this);
+  protected Thread queueHandler = new Thread(this);
 
-	protected Listener listener;
+  protected Listener listener;
 
-	public AListenerQueueHandler(){
-		this(new String[0]);
-	}
-	public AListenerQueueHandler(String[] args){		
-		try {
-			listener = new Listener(args);
-			queueHandler.start();
-		} 
-		catch (IOException e) { e.printStackTrace(); }
-	}
-	
-	public ArrayList<IExecutable> getExecutables() { return listener.getExecutables(); }
-	
-	@Override
-	public abstract void run();
+  public AListenerQueueHandler(){
+    this(new String[0]);
+  }
+  public AListenerQueueHandler(String[] args){    
+    try {
+      listener = new Listener(args);
+      queueHandler.start();
+    } 
+    catch (IOException e) { e.printStackTrace(); }
+  }
+  
+  public ArrayList<IExecutable> getExecutables() { return listener.getExecutables(); }
+  
+  @Override
+  public abstract void run();
 }

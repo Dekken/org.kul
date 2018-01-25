@@ -24,37 +24,37 @@ package org.kul.xml;
 
 public abstract class ThreadedFileLogger extends FileLogger implements Runnable{
 
-	private boolean lock = false;
-	private Thread thread;
+  private boolean lock = false;
+  private Thread thread;
 
-	public ThreadedFileLogger( final ADocument doc){
-		super(doc);
-		thread = new Thread(this);
-	}
-	
-	protected void start(){
-		thread.start();
-	}
+  public ThreadedFileLogger( final ADocument doc){
+    super(doc);
+    thread = new Thread(this);
+  }
+  
+  protected void start(){
+    thread.start();
+  }
 
-	public void lock(){
-		lock = true;
-	}
+  public void lock(){
+    lock = true;
+  }
 
-	public void unLock(){
-		lock = false;
-	}
+  public void unLock(){
+    lock = false;
+  }
 
-	public boolean isLocked(){
-		return lock;
-	}
-	
-	public void interrupt(){
-		thread.interrupt();
-	}
-	
-	public boolean isRunning(){
-		return thread.isAlive();
-	}
-	
-	public abstract void run();
+  public boolean isLocked(){
+    return lock;
+  }
+  
+  public void interrupt(){
+    thread.interrupt();
+  }
+  
+  public boolean isRunning(){
+    return thread.isAlive();
+  }
+  
+  public abstract void run();
 }

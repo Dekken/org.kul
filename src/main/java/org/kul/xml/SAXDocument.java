@@ -29,34 +29,34 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SAXDocument extends ADocument{
 
-	//private final KulXMLSAXNode root;
+  //private final KulXMLSAXNode root;
 
-	public SAXDocument(final File file) throws DocumentException { 
-		super(file);
+  public SAXDocument(final File file) throws DocumentException { 
+    super(file);
 
-		if(!this.file().exists()){}		
-	}
+    if(!this.file().exists()){}    
+  }
 
-	public ANode root(){
-		throw new NotImplementedException();
-	}
+  public ANode root(){
+    throw new NotImplementedException();
+  }
 
-	@Override
-	public void writeXPathNodeText(String query, String text)	throws DocumentException {
-		throw new NotImplementedException();
-	}
+  @Override
+  public void writeXPathNodeText(String query, String text)  throws DocumentException {
+    throw new NotImplementedException();
+  }
 
-	@Override
-	public void writeXPathNodeAttribute(String query, String key, String value) 	throws DocumentException {
-		throw new NotImplementedException();
-	}
+  @Override
+  public void writeXPathNodeAttribute(String query, String key, String value)   throws DocumentException {
+    throw new NotImplementedException();
+  }
 
-	@Override
-	public void writeXPathNode(String query, String node) throws DocumentException {
-		throw new NotImplementedException();
-	}
-	
-	public void save() throws DocumentException{
-		throw new NotImplementedException();
-	}
+  @Override
+  public void writeXPathNode(String query, String node) throws DocumentException {
+    throw new NotImplementedException();
+  }
+  
+  public void save() throws DocumentException{
+    throw new NotImplementedException();
+  }
 }

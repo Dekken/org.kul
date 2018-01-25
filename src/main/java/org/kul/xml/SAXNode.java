@@ -32,32 +32,32 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SAXNode extends ANode{
 
-	//private sax element thing 
-	public SAXNode(/*sax element thing */){
-		/**/
-	}
-	
-	public String name() {		
-		throw new NotImplementedException();
-	}
-	
-	public String text() throws NotATextNodeException{
-		throw new NotImplementedException();
-	}
-	
-	public  String attribute(final String s) throws NoSuchAttributeException{
-		throw new NotImplementedException();
-	}
-	
-	public Map<String, String> attributes() { 
-		throw new NotImplementedException();
-	}
+  //private sax element thing 
+  public SAXNode(/*sax element thing */){
+    /**/
+  }
+  
+  public String name() {    
+    throw new NotImplementedException();
+  }
+  
+  public String text() throws NotATextNodeException{
+    throw new NotImplementedException();
+  }
+  
+  public  String attribute(final String s) throws NoSuchAttributeException{
+    throw new NotImplementedException();
+  }
+  
+  public Map<String, String> attributes() { 
+    throw new NotImplementedException();
+  }
 
-	public ANode child(String child) throws NoSuchNodeException {
-		throw new NotImplementedException();
-	}
+  public ANode child(String child) throws NoSuchNodeException {
+    throw new NotImplementedException();
+  }
 
-	public ArrayList<ANode> children() {
-		throw new NotImplementedException();
-	}	
+  public ArrayList<ANode> children() {
+    throw new NotImplementedException();
+  }  
 }

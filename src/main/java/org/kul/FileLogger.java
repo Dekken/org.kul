@@ -23,16 +23,16 @@ package org.kul;
 
 public class FileLogger{
 
-	private String file;
+  private String file;
 
-	public FileLogger(final String file){
-		this.file = file;
-	}
+  public FileLogger(final String file){
+    this.file = file;
+  }
 
-	public String getFile(){ return file; }
+  public String getFile(){ return file; }
 
-	public void write(String s){
-		
-	}
+  public void write(String s){
+    
+  }
 
 }

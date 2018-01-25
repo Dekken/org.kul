@@ -32,74 +32,74 @@ import org.kul.err.InstrumentationNotInstantiatedException;
 
 public class InstrumentationService{
 
-	//private static final Logger LOGGER = Logger.getLogger(KulInstrumentationService.class);
+  //private static final Logger LOGGER = Logger.getLogger(KulInstrumentationService.class);
 
-	public static void premain(String args, Instrumentation inst) {
-		InstrumentationService.INSTANCE.instantiate(inst);
-	}
+  public static void premain(String args, Instrumentation inst) {
+    InstrumentationService.INSTANCE.instantiate(inst);
+  }
 
-	private Instrumentation instrumentation;
+  private Instrumentation instrumentation;
 
-	InstrumentationService(Instrumentation inst) {
-		this.instrumentation = inst;	
-	}
+  InstrumentationService(Instrumentation inst) {
+    this.instrumentation = inst;  
+  }
 
-	public static class INSTANCE{
-		protected static void instantiate(Instrumentation inst){ instance = new InstrumentationService(inst);}
-		private static InstrumentationService instance;
-		public static InstrumentationService GET() throws InstrumentationNotInstantiatedException{ 
-			if(instance == null) 
-				throw new InstrumentationNotInstantiatedException("Java agent not instantiated");
-			return instance;
-		}
-	}
+  public static class INSTANCE{
+    protected static void instantiate(Instrumentation inst){ instance = new InstrumentationService(inst);}
+    private static InstrumentationService instance;
+    public static InstrumentationService GET() throws InstrumentationNotInstantiatedException{ 
+      if(instance == null) 
+        throw new InstrumentationNotInstantiatedException("Java agent not instantiated");
+      return instance;
+    }
+  }
 
-	public Long getObjectSize(final Object o){
-		return instrumentation.getObjectSize(o);
-	}
+  public Long getObjectSize(final Object o){
+    return instrumentation.getObjectSize(o);
+  }
 
-	/**
-	 * Returns complete object memory allocation for object and all fields
-	 * Ignores static fields - use getObjectSize instead
-	 */	
-	public <T extends Object> Long getDeepObjectSize(final T t){		
-		return getDeepObjectSizeRecursive(t, new HashSet<Integer>());
-	}
+  /**
+   * Returns complete object memory allocation for object and all fields
+   * Ignores static fields - use getObjectSize instead
+   */  
+  public <T extends Object> Long getDeepObjectSize(final T t){    
+    return getDeepObjectSizeRecursive(t, new HashSet<Integer>());
+  }
 
-	private <T extends Object> Long getDeepObjectSizeRecursive(final T t, HashSet<Integer> hashes){
-		Long bytes = new Long(0);
+  private <T extends Object> Long getDeepObjectSizeRecursive(final T t, HashSet<Integer> hashes){
+    Long bytes = new Long(0);
 
-		HashSet<java.lang.reflect.Field> fields = new HashSet<java.lang.reflect.Field>();
-		for(Class<?> c = t.getClass(); !c.isAssignableFrom(Object.class) ; c = c.getSuperclass())
-			fields.addAll(java.util.Arrays.asList(c.getDeclaredFields()));
-		
-		try {
-			for(java.lang.reflect.Field field : new HashSet<java.lang.reflect.Field>(fields)){
-				boolean access = field.isAccessible();
-				if(!access)
-					field.setAccessible(true);
-				if(field.get(t) == null || hashes.contains(field.get(t).hashCode())
-						||  java.lang.reflect.Modifier.isStatic(field.getModifiers()))					
-					fields.remove(field);			
-				if(!access) 
-					field.setAccessible(false);
-			}
+    HashSet<java.lang.reflect.Field> fields = new HashSet<java.lang.reflect.Field>();
+    for(Class<?> c = t.getClass(); !c.isAssignableFrom(Object.class) ; c = c.getSuperclass())
+      fields.addAll(java.util.Arrays.asList(c.getDeclaredFields()));
+    
+    try {
+      for(java.lang.reflect.Field field : new HashSet<java.lang.reflect.Field>(fields)){
+        boolean access = field.isAccessible();
+        if(!access)
+          field.setAccessible(true);
+        if(field.get(t) == null || hashes.contains(field.get(t).hashCode())
+            ||  java.lang.reflect.Modifier.isStatic(field.getModifiers()))          
+          fields.remove(field);      
+        if(!access) 
+          field.setAccessible(false);
+      }
 
-			for(java.lang.reflect.Field field : fields){
-				boolean access = field.isAccessible();
-				if(!access)
-					field.setAccessible(true);
-				hashes.add(field.get(t).hashCode());
-				if(field.getType().isPrimitive())
-					bytes += getObjectSize(field.get(t));
-				else
-					bytes += getDeepObjectSizeRecursive(field.get(t), hashes);
-				if(!access) field.setAccessible(false);
-			}				
-		}
-		catch (IllegalArgumentException e) 	{ e.printStackTrace(); }
-		catch (IllegalAccessException e) 		{ e.printStackTrace(); }
+      for(java.lang.reflect.Field field : fields){
+        boolean access = field.isAccessible();
+        if(!access)
+          field.setAccessible(true);
+        hashes.add(field.get(t).hashCode());
+        if(field.getType().isPrimitive())
+          bytes += getObjectSize(field.get(t));
+        else
+          bytes += getDeepObjectSizeRecursive(field.get(t), hashes);
+        if(!access) field.setAccessible(false);
+      }        
+    }
+    catch (IllegalArgumentException e)   { e.printStackTrace(); }
+    catch (IllegalAccessException e)     { e.printStackTrace(); }
 
-		return bytes;
-	}
+    return bytes;
+  }
 }

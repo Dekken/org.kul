@@ -26,24 +26,24 @@ import org.kul.xml.err.DocumentException;
 
 public class FileLogger{
 
-	private final ADocument doc;
-	
-	public FileLogger(final ADocument doc) {
-		this.doc = doc;
-	}
-	
-	public void writeXPathNode(final String query, final String node) throws DocumentException{
-		doc.writeXPathNode(query, node);
-	}
-	
-	public void writeXPathNodeText(final String query, final String text) throws DocumentException{
-		doc.writeXPathNodeText(query,  text);
-	}
-	public void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException{
-		doc.writeXPathNodeAttribute(query, key, value);
-	}
-	
-	public void save() throws DocumentException{
-		doc.save();
-	}
+  private final ADocument doc;
+  
+  public FileLogger(final ADocument doc) {
+    this.doc = doc;
+  }
+  
+  public void writeXPathNode(final String query, final String node) throws DocumentException{
+    doc.writeXPathNode(query, node);
+  }
+  
+  public void writeXPathNodeText(final String query, final String text) throws DocumentException{
+    doc.writeXPathNodeText(query,  text);
+  }
+  public void writeXPathNodeAttribute(final String query, final String key, final String value) throws DocumentException{
+    doc.writeXPathNodeAttribute(query, key, value);
+  }
+  
+  public void save() throws DocumentException{
+    doc.save();
+  }
 }

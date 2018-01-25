@@ -24,8 +24,8 @@ package org.kul.xml.err;
 
 @SuppressWarnings("serial")
 public class NodeValidationException extends org.kul.Exception {
-	
-	public NodeValidationException(final String msg){
-		super(msg);
-	}
+  
+  public NodeValidationException(final String msg){
+    super(msg);
+  }
 }

@@ -30,33 +30,33 @@ import org.kul.xml.err.NotATextNodeException;
 
 public abstract class ANode{
 
-	protected ANode(){}	
+  protected ANode(){}  
 
-	public abstract String name();
+  public abstract String name();
 
-	public abstract String attribute(final String s) throws NoSuchAttributeException;
+  public abstract String attribute(final String s) throws NoSuchAttributeException;
 
-	public abstract Map<String, String> attributes();
+  public abstract Map<String, String> attributes();
 
-	public abstract String text() throws NotATextNodeException;
+  public abstract String text() throws NotATextNodeException;
 
-	public abstract ANode child(String child) throws NoSuchNodeException;
+  public abstract ANode child(String child) throws NoSuchNodeException;
 
-	public abstract ArrayList<ANode> children();
+  public abstract ArrayList<ANode> children();
 
-	public Long parseTextAsLong() throws org.kul.Exception{
-		Long l = new Long(0);
-		try{ l = Long.parseLong(this.text()); }
-		catch(NumberFormatException e){ 
-			throw new org.kul.Exception("Node " + this.name() + " contains invalid data, expected num"); 
-		}
-		return l;
-	}
+  public Long parseTextAsLong() throws org.kul.Exception{
+    Long l = new Long(0);
+    try{ l = Long.parseLong(this.text()); }
+    catch(NumberFormatException e){ 
+      throw new org.kul.Exception("Node " + this.name() + " contains invalid data, expected num"); 
+    }
+    return l;
+  }
 
-	public Long parseNonEmptyTextAsLong() throws org.kul.Exception{
-		Long l = new Long(0);
-		if(this.text() != null && !this.text().isEmpty())
-			l = parseTextAsLong();
-		return l;
-	}
+  public Long parseNonEmptyTextAsLong() throws org.kul.Exception{
+    Long l = new Long(0);
+    if(this.text() != null && !this.text().isEmpty())
+      l = parseTextAsLong();
+    return l;
+  }
 }

@@ -34,35 +34,35 @@ import org.apache.log4j.Logger;
 
 public class FileInJar{
 
-	private static final Logger LOGGER = Logger.getLogger(FileInJar.class);
+  private static final Logger LOGGER = Logger.getLogger(FileInJar.class);
 
-	private final InputStream file;
+  private final InputStream file;
 
-	public FileInJar(final String file) throws FileNotFoundException{
-		this.file = getClass().getResourceAsStream(file);
-		if(this.file == null) throw new FileNotFoundException("No file - \"" + file + "\" in jar");
-	}
+  public FileInJar(final String file) throws FileNotFoundException{
+    this.file = getClass().getResourceAsStream(file);
+    if(this.file == null) throw new FileNotFoundException("No file - \"" + file + "\" in jar");
+  }
 
-	public void copy(final String dir, final String file) throws UnsupportedEncodingException, IOException {		
+  public void copy(final String dir, final String file) throws UnsupportedEncodingException, IOException {    
 
-		BufferedReader input = new BufferedReader(new InputStreamReader(this.file));
+    BufferedReader input = new BufferedReader(new InputStreamReader(this.file));
 
-		new File(dir).mkdirs();					
-		PrintWriter writer = new PrintWriter(dir + "/" + file, "UTF-8");
-		String line = input.readLine();  
-		while (line != null){
-			writer.println(line);
-			line = input.readLine();
-		}			
-		writer.close();
-	}
+    new File(dir).mkdirs();          
+    PrintWriter writer = new PrintWriter(dir + "/" + file, "UTF-8");
+    String line = input.readLine();  
+    while (line != null){
+      writer.println(line);
+      line = input.readLine();
+    }      
+    writer.close();
+  }
 
-	public void print() throws IOException{
-		BufferedReader input = new BufferedReader(new InputStreamReader(this.file));
-		String line = input.readLine();  
-		while (line != null){
-			LOGGER.info(line);
-			line = input.readLine();
-		}		
-	}
+  public void print() throws IOException{
+    BufferedReader input = new BufferedReader(new InputStreamReader(this.file));
+    String line = input.readLine();  
+    while (line != null){
+      LOGGER.info(line);
+      line = input.readLine();
+    }    
+  }
 }

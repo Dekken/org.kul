@@ -25,8 +25,8 @@ package org.kul.xml.err;
 @SuppressWarnings("serial")
 public class NoSuchNodeException extends org.kul.Exception {
 
-	public NoSuchNodeException(String msg) {
-		super(msg);
-	}
+  public NoSuchNodeException(String msg) {
+    super(msg);
+  }
 
 }

@@ -26,14 +26,14 @@ import java.io.File;
 import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class ANodeUser{
-	
-	private final ADocument doc;	
-	
-	protected ANodeUser(final File f, Class<? extends ADocument> docType) throws org.kul.Exception{
-		this.doc = ValidationService.INSTANCE.GET().create(f, validator(), docType);	
-	}	
-	
-	public final ADocument doc(){ return doc;}	
-	
-	protected abstract Pair<String, NodeValidator> validator();
+  
+  private final ADocument doc;  
+  
+  protected ANodeUser(final File f, Class<? extends ADocument> docType) throws org.kul.Exception{
+    this.doc = ValidationService.INSTANCE.GET().create(f, validator(), docType);  
+  }  
+  
+  public final ADocument doc(){ return doc;}  
+  
+  protected abstract Pair<String, NodeValidator> validator();
 }

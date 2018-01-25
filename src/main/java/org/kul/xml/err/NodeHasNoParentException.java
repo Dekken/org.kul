@@ -25,8 +25,8 @@ package org.kul.xml.err;
 @SuppressWarnings("serial")
 public class NodeHasNoParentException extends org.kul.Exception {
 
-	public NodeHasNoParentException(String msg) {
-		super(msg);
-	}
+  public NodeHasNoParentException(String msg) {
+    super(msg);
+  }
 
 }

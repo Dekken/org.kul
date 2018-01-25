@@ -25,36 +25,36 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NodeValidator{
-	
-	private final HashMap<String, NodeValidator> kinder;
-	private final ArrayList<NodeAttributeValidator> atVals;
-	private final int min;
-	private final int max;
-	private final boolean text;
-	
-	public NodeValidator(
-			final HashMap<String, NodeValidator> kinder,
-			final ArrayList<NodeAttributeValidator> atVals, 
-			final int min, final int max, final boolean text){
-		this.kinder = kinder;
-		this.atVals = atVals;
-		this.min = min;
-		this.max = max;
-		this.text = text;
-	}	
-	public NodeValidator(final HashMap<String, NodeValidator> kinder, final int min, final int max, final boolean text){
-		this(kinder, new ArrayList<NodeAttributeValidator>(), min, max, text);
-	}
-	public NodeValidator(final ArrayList<NodeAttributeValidator> atVals, final int min, final int max, final boolean text){
-		this(new HashMap<String, NodeValidator>(), atVals, min, max, text);
-	}
-	public NodeValidator(final int min, final int max, final boolean text){
-		this(new HashMap<String, NodeValidator>(), new ArrayList<NodeAttributeValidator>(), min, max, text);
-	}	
-	
-	public final HashMap<String, NodeValidator>	getChildren() 	 { return this.kinder; }
-	public final ArrayList<NodeAttributeValidator> 					getAtVals()		 { return atVals; }
-	public final int 													minimum() 		 { return this.min; }
-	public final  int 													maximum() 		 { return this.max; }
-	public final  boolean											isText() 		 { return this.text; }
+  
+  private final HashMap<String, NodeValidator> kinder;
+  private final ArrayList<NodeAttributeValidator> atVals;
+  private final int min;
+  private final int max;
+  private final boolean text;
+  
+  public NodeValidator(
+      final HashMap<String, NodeValidator> kinder,
+      final ArrayList<NodeAttributeValidator> atVals, 
+      final int min, final int max, final boolean text){
+    this.kinder = kinder;
+    this.atVals = atVals;
+    this.min = min;
+    this.max = max;
+    this.text = text;
+  }  
+  public NodeValidator(final HashMap<String, NodeValidator> kinder, final int min, final int max, final boolean text){
+    this(kinder, new ArrayList<NodeAttributeValidator>(), min, max, text);
+  }
+  public NodeValidator(final ArrayList<NodeAttributeValidator> atVals, final int min, final int max, final boolean text){
+    this(new HashMap<String, NodeValidator>(), atVals, min, max, text);
+  }
+  public NodeValidator(final int min, final int max, final boolean text){
+    this(new HashMap<String, NodeValidator>(), new ArrayList<NodeAttributeValidator>(), min, max, text);
+  }  
+  
+  public final HashMap<String, NodeValidator>  getChildren()    { return this.kinder; }
+  public final ArrayList<NodeAttributeValidator>           getAtVals()     { return atVals; }
+  public final int                           minimum()      { return this.min; }
+  public final  int                           maximum()      { return this.max; }
+  public final  boolean                      isText()      { return this.text; }
 }

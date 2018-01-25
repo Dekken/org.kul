@@ -22,9 +22,9 @@ along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package org.kul;
 
 @SuppressWarnings("serial")
-public class Exception extends java.lang.Exception{	
-	
-	public Exception(final String msg){
-		super(msg);
-	}
+public class Exception extends java.lang.Exception{  
+  
+  public Exception(final String msg){
+    super(msg);
+  }
 }

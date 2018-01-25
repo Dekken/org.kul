@@ -25,8 +25,8 @@ package org.kul.xml.err;
 @SuppressWarnings("serial")
 public class NoSuchAttributeException extends org.kul.Exception {
 
-	public NoSuchAttributeException(String msg) {
-		super(msg);
-	}
+  public NoSuchAttributeException(String msg) {
+    super(msg);
+  }
 
 }

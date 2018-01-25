@@ -24,7 +24,7 @@ package org.kul.xml.err;
 @SuppressWarnings("serial")
 public class DocumentException extends org.kul.Exception {
 
-	public DocumentException(String msg) {
-		super(msg);
-	}
+  public DocumentException(String msg) {
+    super(msg);
+  }
 }

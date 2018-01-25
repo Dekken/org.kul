@@ -37,55 +37,55 @@ import org.w3c.dom.NodeList;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DOMNode extends ANode{
-	
-	//private static final Logger LOGGER =  Logger.getLogger(DOMNode.class);
+  
+  //private static final Logger LOGGER =  Logger.getLogger(DOMNode.class);
 
-	private final Element element;
-	
-	public DOMNode(final Element element){
-		this.element = element;
-	}
+  private final Element element;
+  
+  public DOMNode(final Element element){
+    this.element = element;
+  }
 
-	public String name() {
-		return element.getNodeName();
-	}
-	
-	public String text() throws NotATextNodeException{
-		if (element.getFirstChild().getNodeType() == Node.TEXT_NODE) 
-			return element.getFirstChild().getNodeValue();
-		throw new NotATextNodeException("Node " + name() + " is not a text node");
-	}
+  public String name() {
+    return element.getNodeName();
+  }
+  
+  public String text() throws NotATextNodeException{
+    if (element.getFirstChild().getNodeType() == Node.TEXT_NODE) 
+      return element.getFirstChild().getNodeValue();
+    throw new NotATextNodeException("Node " + name() + " is not a text node");
+  }
 
-	public  String attribute(final String s) throws NoSuchAttributeException{
-		throw new NotImplementedException();
-	}
-	
-	public Map<String, String> attributes() {
-		HashMap<String, String> rAttMap = new HashMap<String, String>();
-		NamedNodeMap attributes = element.getAttributes();
-		for (int i = 0; i < attributes.getLength(); i++) {
-			Attr attr = (Attr) attributes.item(i);				
-			rAttMap.put(attr.getNodeName(), attr.getNodeValue());
-		}
-		return rAttMap;
-	}
+  public  String attribute(final String s) throws NoSuchAttributeException{
+    throw new NotImplementedException();
+  }
+  
+  public Map<String, String> attributes() {
+    HashMap<String, String> rAttMap = new HashMap<String, String>();
+    NamedNodeMap attributes = element.getAttributes();
+    for (int i = 0; i < attributes.getLength(); i++) {
+      Attr attr = (Attr) attributes.item(i);        
+      rAttMap.put(attr.getNodeName(), attr.getNodeValue());
+    }
+    return rAttMap;
+  }
 
-	@SuppressWarnings("unused")
-	public ANode child(String child) throws NoSuchNodeException {	
-		NodeList elements = element.getElementsByTagName(child);
-		for (int i = 0; i < elements.getLength(); i++)
-			return new DOMNode((Element) elements.item(i));		
-		
-		throw new NoSuchNodeException("No child node " + child + " found under node + " + element.getNodeName());
-	}
+  @SuppressWarnings("unused")
+  public ANode child(String child) throws NoSuchNodeException {  
+    NodeList elements = element.getElementsByTagName(child);
+    for (int i = 0; i < elements.getLength(); i++)
+      return new DOMNode((Element) elements.item(i));    
+    
+    throw new NoSuchNodeException("No child node " + child + " found under node + " + element.getNodeName());
+  }
 
-	public ArrayList<ANode> children() {
-		ArrayList<ANode> kinder = new ArrayList<ANode>();
-		
-		NodeList elements = element.getChildNodes();
-		for (int i = 0; i < elements.getLength(); i++)
-			if(Element.class.isAssignableFrom(elements.item(i).getClass()))
-				kinder.add(new DOMNode((Element) elements.item(i)));
-		return kinder;
-	}	
+  public ArrayList<ANode> children() {
+    ArrayList<ANode> kinder = new ArrayList<ANode>();
+    
+    NodeList elements = element.getChildNodes();
+    for (int i = 0; i < elements.getLength(); i++)
+      if(Element.class.isAssignableFrom(elements.item(i).getClass()))
+        kinder.add(new DOMNode((Element) elements.item(i)));
+    return kinder;
+  }  
 }

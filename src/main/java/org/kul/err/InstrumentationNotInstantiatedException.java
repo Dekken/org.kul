@@ -26,7 +26,7 @@ import org.kul.Exception;
 @SuppressWarnings("serial")
 public class InstrumentationNotInstantiatedException extends Exception{ 
 
-	public InstrumentationNotInstantiatedException(final String msg){
-		super(msg);
-	}
+  public InstrumentationNotInstantiatedException(final String msg){
+    super(msg);
+  }
 }
